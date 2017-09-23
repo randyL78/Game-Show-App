@@ -22,7 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
 						"misery loves company",
 						"it takes two to tango",
 					    "Talk is Cheap",
-					   	"Curiosity Killed the Cat"];
+					   	"Curiosity Killed the Cat",
+					    "no news is good news",
+					    "ignorance is bliss",
+					    "a stitch in time saves nine",
+					    "better late than never",
+					    "bad news travels fast",
+					    "haste makes waste"];
 	// variables
 	let missed = 0;
 	let inGame = false;
@@ -55,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (letter !== " ") {
 				phraseElement.appendChild(createLI(letter.toUpperCase(), "letter"));			
 			} else {
-				phraseElement.appendChild(createLI(" ", ""));			
+				phraseElement.appendChild(createLI(" ", "space"));			
 			}
 		}
 	}
@@ -83,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		key = key.toUpperCase();
 		for (let letter of letters) {
 			if(letter.textContent === key) {
-				letter.className += "show";
+				letter.className += " show";
 				hit = key;
 			}
 		}
@@ -111,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			
 			startButton.textContent = "Reset";
 			overlay.className = whichOverlay;
-			overlay.style.display = "block";
+			overlay.style.display = "flex";
 			inGame = false;
 			missed = 0;
 		
@@ -137,9 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 		if (text !== " ") { 
 			el.textContent = text;
-		} else {
-			el.innerHTML = "&nbsp;&nbsp;";
-		}
+		} 
 		return el;
 	}
 	
