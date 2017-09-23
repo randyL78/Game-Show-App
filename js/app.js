@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
 					 	"once bitten twice shy",
 					 	"less is more",
 						"misery loves company",
-						"it takes two to tango"];
-	
+						"it takes two to tango",
+					    "Talk is Cheap",
+					   	"Curiosity Killed the Cat"];
 	// variables
 	let missed = 0;
 	let inGame = false;
@@ -54,24 +55,78 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (letter !== " ") {
 				phraseElement.appendChild(createLI(letter.toUpperCase(), "letter"));			
 			} else {
-				phraseElement.appendChild(createLI(letter.toUpperCase(), ""));			
+				phraseElement.appendChild(createLI(" ", ""));			
 			}
 		}
 	}
 	
+	function chooseLetter(letterElement) {
+		letterElement.className = "chosen";
+		const key = letterElement.textContent;
+		const hit = (checkLetter(key));
+		if (!hit) {
+			missed++;	
+			const tries = document.querySelector('.tries');
+			if (tries) {
+				tries.className = "lostHeart";
+				tries.firstElementChild.src = "images/lostHeart.png";
+			} 
+			
+		}
+		checkWin();
+	}
+	
+	
 	function checkLetter(key) {
 		const letters = phraseElement.querySelectorAll('li');
-		let hit = false;
+		let hit = null;
+		key = key.toUpperCase();
 		for (let letter of letters) {
-			if(letter.textContent === key.toUpperCase()) {
+			if(letter.textContent === key) {
 				letter.className += "show";
-				hit = true;
+				hit = key;
 			}
 		}
-		if (!hit) {
-			missed++;
-			alert(missed);
+		return hit;
+	}
+	
+	// Check if win conditions or lose conditions have been met
+	function checkWin() {
+		const foundLength = (phraseElement.querySelectorAll(".show").length);	
+		const phraseLength = (phraseElement.querySelectorAll(".letter").length);
+		if (phraseLength === foundLength) {
+			reset("win");
 		}
+		
+		if (missed > 5) {
+			reset("lose");
+		}
+	}
+	
+	// Display win or lose and reset game elements
+	function reset(whichOverlay) {
+			const overlay = document.querySelector("#overlay");
+			const keyboard = qwertyElement.querySelectorAll(".chosen");
+			const lostHearts = document.querySelectorAll(".lostHeart");
+			
+			startButton.textContent = "Reset";
+			overlay.className = whichOverlay;
+			overlay.style.display = "block";
+			inGame = false;
+			missed = 0;
+		
+			for (let key of keyboard) {
+				key.className = "";
+			}
+			
+			for (let heart of lostHearts) {
+				heart.className = "tries";
+				heart.firstElementChild.src = "images/liveHeart.png";
+			}
+		
+			while (phraseElement.hasChildNodes) {
+				phraseElement.removeChild(phraseElement.firstChild);
+			}
 	}
 	
 	// create any element and add text to it
@@ -80,7 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (name !== "") {
 			el.className = name;
 		}
-		el.textContent = text;
+		if (text !== " ") { 
+			el.textContent = text;
+		} else {
+			el.innerHTML = "&nbsp;&nbsp;";
+		}
 		return el;
 	}
 	
@@ -100,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// event listeners
 	////////////////////////////////////////////////////////////////////////////////
 	
-	// click start button to hidestart overlay and start the game
+	// click start button to hide start overlay and start the game
 	startButton.addEventListener('click', ()  =>  {
 		const overlay = document.querySelector("#overlay");
 		overlay.style.display = "none";
@@ -116,12 +175,21 @@ document.addEventListener('DOMContentLoaded', function () {
 				if (count !== undefined) {
 					const letter = letters[count];
 					if (letter.textContent === key && letter.className !== "chosen") {
-						letter.className = "chosen";
-						checkLetter(key);
+						chooseLetter(letter);	
 					}
 				}
 			}
-			
 		}
 	});
+	
+	// let users click letter with mouse if they prefer
+	qwertyElement.addEventListener('click', (e) => {
+		const letterPressed = e.target;
+		if (inGame) {
+			if (letterPressed.tagName === "BUTTON" && letterPressed.className !== "chosen") {
+				chooseLetter(letterPressed);
+			}
+		}
+	});
+	
 });
