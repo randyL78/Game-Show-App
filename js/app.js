@@ -196,4 +196,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 	
+	// supress users ability to click around in the phrase area and have the browsers text selector reveal the phrase
+	document.addEventListener("mousedown", function (e) {
+		e.preventDefault();
+	});
+	
 });
