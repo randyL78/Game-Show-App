@@ -144,6 +144,12 @@ button {
   left: 0;
   right: 0;
   border-radius: 5px;
+  transition-delay: 1.8s;
+  transition: display 1.4s ease-in;
+}
+
+.tranparent {
+	opacity: 0.1;
 }
 
 .title {

@@ -114,13 +114,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			const overlay = document.querySelector("#overlay");
 			const keyboard = qwertyElement.querySelectorAll(".chosen");
 			const lostHearts = document.querySelectorAll(".lostHeart");
-			
+		
 			startButton.textContent = "Reset";
-			overlay.className = whichOverlay;
 			overlay.style.display = "flex";
+			overlay.className = whichOverlay;
+
 			inGame = false;
 			missed = 0;
-		
 			for (let key of keyboard) {
 				key.className = "";
 			}
@@ -129,10 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
 				heart.className = "tries";
 				heart.firstElementChild.src = "images/liveHeart.png";
 			}
-		
+			
+			
 			while (phraseElement.hasChildNodes) {
 				phraseElement.removeChild(phraseElement.firstChild);
 			}
+
 	}
 	
 	// create any element and add text to it
@@ -156,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function loadGame() {
 		inGame = true;
 		const phraseArray = getRandomPhraseArray(allPhrases);
-		addPhraseToDisplay(phraseArray);		
+		addPhraseToDisplay(phraseArray);	
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -167,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	startButton.addEventListener('click', ()  =>  {
 		const overlay = document.querySelector("#overlay");
 		overlay.style.display = "none";
+
 		loadGame();
 	});
 	
@@ -196,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 	
-	// supress users ability to click around in the phrase area and have the browsers text selector reveal the phrase
+	// supress users ability to click around in the window and have the browser's text selector reveal the phrase
 	document.addEventListener("mousedown", function (e) {
 		e.preventDefault();
 	});
